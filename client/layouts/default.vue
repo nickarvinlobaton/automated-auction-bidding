@@ -64,7 +64,7 @@
     data() {
       return {
         collapsed: false,
-        sidebar: true,
+        sidebar: false,
       };
     },
     computed: {
