@@ -66,6 +66,7 @@ export const mutations = {
 export const actions = {
   registerUser: function ({ commit }, payload) {
     const { name, username, password } = payload;
+    console.log(payload)
     const config = {
       headers: {
         "Content-Type": "application/json"
@@ -77,13 +78,15 @@ export const actions = {
       password
     });
     this.$axios
-      .post(`http://localhost:8000/api/user`, newUser, config)
+      .post(`./api/user`, newUser, config)
       .then(res => {
         console.log(res);
+        console.log('success');
         commit("DEFAULT_STATE");
-        router.push("/login", () => {});
+        this.$router.push("/login", () => {});
       })
       .catch(() => {
+        console.log('err');
         commit("REGISTER_ERROR");
       });
   },
@@ -105,7 +108,7 @@ export const actions = {
       password
     });
     this.$axios
-      .post(`http://localhost:8000/oauth/token`, body, config)
+      .post(`./oauth/token`, body, config)
       .then(res => {
         commit("SET_TOKEN", res.data);
         dispatch("authenticateUser");
@@ -123,7 +126,7 @@ export const actions = {
     };
 
     this.$axios
-      .get(`http://localhost:8000/api/user`, config)
+      .get(`./api/user`, config)
       .then(res => {
         const payload = {
           user: res.data
