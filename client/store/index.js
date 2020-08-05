@@ -65,7 +65,7 @@ export const mutations = {
 
 export const actions = {
   registerUser: function ({ commit }, payload) {
-    const { name, email, password } = payload;
+    const { name, username, password } = payload;
     const config = {
       headers: {
         "Content-Type": "application/json"
@@ -73,11 +73,11 @@ export const actions = {
     };
     const newUser = JSON.stringify({
       name,
-      email,
+      username,
       password
     });
     this.$axios
-      .post(`./api/user`, newUser, config)
+      .post(`http://localhost:8000/api/user`, newUser, config)
       .then(res => {
         console.log(res);
         commit("DEFAULT_STATE");

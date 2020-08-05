@@ -34,6 +34,8 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
+
   export default {
     name: "RegisterForm",
     data () {
@@ -47,23 +49,12 @@
       }
     },
     methods: {
-      async handleSubmit () {
-        try {
-          const config = {
-            headers: {
-              "Content-Type": "application/json"
-            }
-          };
-          const { name, username, password } = this.form;
-          const data = JSON.stringify({
-            name,
-            username,
-            password,
-          });
-          const response = await this.$axios.post("http://localhost:8000/api/user", data, config);
-          console.log(response);
-        } catch (e) {
-          console.log(e);
+      ...mapActions(['registerUser']),
+      handleSubmit () {
+        if(this.form.password === this.form.confirmPassword) {
+          this.registerUser(this.form);
+        } else {
+          console.log('password doesnt match')
         }
       }
     }
