@@ -23,6 +23,8 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
+
   export default {
     name: "LoginForm",
     data() {
@@ -34,25 +36,10 @@
       }
     },
     methods: {
-      async handleSubmit() {
-        const config = {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        };
-        try {
-          const data = JSON.stringify({
-            grant_type: "password",
-            client_id: 2,
-            client_secret: "jbBMtwBc8SUHJCx6Zf90YgVxxG69H5cxMriLbKd8",
-            username: this.form.username,
-            password: this.form.password
-          });
-          const res = await this.$axios.post("http://localhost:8000/oauth/token", data, config);
-          console.log(res);
-        } catch (e) {
-            console.log(e);
-        }
+      ...mapActions(['loginUser']),
+      handleSubmit() {
+        const payload = this.form;
+        this.loginUser(payload);
       }
     }
   }

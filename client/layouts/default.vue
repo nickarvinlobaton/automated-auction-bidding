@@ -2,7 +2,7 @@
   <div>
     <a-layout id="components-layout-demo-custom-trigger">
       <a-layout-sider
-        v-if="sidebar"
+        v-if="isAuthenticated"
         v-model="collapsed"
         :trigger="null"
         collapsible>
@@ -25,12 +25,13 @@
       <a-layout>
         <a-layout-header :style="{background: headerColor, padding: 0}">
           <a-icon
-            v-if="sidebar"
+            v-if="isAuthenticated"
             class="trigger"
             :type="collapsed ? 'menu-unfold' : 'menu-fold'"
             @click="() => (collapsed = !collapsed)"
           />
-          <div v-if="!sidebar">
+          <!--Register & Login-->
+          <div v-if="!isAuthenticated">
             <a-button
               type="link"
               class="auth-link"
@@ -47,6 +48,29 @@
               Register
             </a-button>
           </div>
+          <!--Logout-->
+          <a-button
+            v-if="isAuthenticated"
+            class="username"
+            type="link"
+            :style="{ float: 'right', padding: '16px 14px', marginRight: '10px' }"
+            style="margin-right: 10px"
+            @click="logout"
+          >
+            Logout
+          </a-button>
+          <!--Username-->
+          <a-button
+            v-if="isAuthenticated"
+            class="username"
+            type="link"
+            :style="{ float: 'right', padding: '16px 14px', marginRight: '10px' }"
+            style="margin-right: 10px"
+          >
+            <a-icon type="user"/>
+            {{ this.user.username }}
+          </a-button>
+
         </a-layout-header>
         <a-layout-content
           :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '75vh' }"
@@ -60,16 +84,26 @@
 </template>
 
 <script>
+  import {mapState} from 'vuex'
+
   export default {
     data() {
       return {
         collapsed: false,
-        sidebar: false,
       };
     },
+    beforeCreate() {
+      this.$store.dispatch('authenticateUser')
+    },
+    methods: {
+      logout() {
+        this.$store.dispatch('logoutUser');
+      }
+    },
     computed: {
+      ...mapState(['isAuthenticated', 'user']),
       headerColor() {
-        return this.sidebar ? '#fff' : '#001529'
+        return this.isAuthenticated ? '#fff' : '#001529'
       },
     }
   }
@@ -98,5 +132,9 @@
     float: right;
     padding: 16px 14px;
     color: #ffffff
+  }
+
+  .username {
+    color: #595959;
   }
 </style>
