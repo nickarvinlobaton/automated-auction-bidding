@@ -43,4 +43,9 @@ class User extends Authenticatable
     {
         return $this->where('username', $username)->first();
     }
+
+    public function domains()
+    {
+        return $this->hasMany('App\Domain', 'user_id');
+    }
 }

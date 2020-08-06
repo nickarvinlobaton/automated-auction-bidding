@@ -28,7 +28,7 @@
             :type="collapsed ? 'menu-unfold' : 'menu-fold'"
             @click="() => (collapsed = !collapsed)"
           />
-          <span class="route-name">{{ $route.name }}</span>
+          <span v-if="isAuthenticated" class="route-name">{{ $route.name }}</span>
           <!--Register & Login-->
           <div v-if="!isAuthenticated">
             <a-button

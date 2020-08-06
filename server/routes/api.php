@@ -15,6 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::apiResource('/user', 'UserController');
+
+Route::middleware(['auth:api'])->group(function () {
+    Route::apiResource('/domain', 'DomainController');
+});
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
