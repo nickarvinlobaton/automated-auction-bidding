@@ -95,8 +95,7 @@
     beforeCreate() {
       this.$store.dispatch('authenticateUser');
       if (!this.isAuthenticated && this.$route.name !== 'register') {
-        this.$router.push('/login', () => {
-        });
+        this.$router.push('/login', () => {});
       }
     },
     methods: {

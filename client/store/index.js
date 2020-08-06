@@ -1,5 +1,5 @@
 export const state = () => ({
-  token: localStorage.getItem("token"),
+  token: null,
   user: null,
   isAuthenticated: false,
   isError: false,
@@ -8,26 +8,29 @@ export const state = () => ({
 });
 
 export const mutations = {
-  DEFAULT_STATE: state => {
+  DEFAULT_STATE: function (state) {
     state.user = null;
     state.isAuthenticated = false;
     state.isError = false;
     state.errorMessage = "";
     state.errorType = "";
   },
-  SET_TOKEN: (state, payload) => {
-    localStorage.setItem("token", payload.access_token);
+  SET_TOKEN: function (state, payload) {
+    this.$cookies.set('token', payload.access_token, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7
+    });
   },
-  AUTH_USER: (state, payload) => {
-    state.token = localStorage.getItem("token");
+  AUTH_USER: function (state, payload) {
+    state.token = this.$cookies.get("token");
     state.isAuthenticated = true;
     state.user = payload.user;
     state.isError = false;
     state.errorMessage = "";
     state.errorType = "";
   },
-  LOGOUT_USER: state => {
-    localStorage.removeItem("token");
+  LOGOUT_USER: function () {
+    this.$cookies.remove("token");
     state.token = null;
     state.user = null;
     state.isAuthenticated = false;
@@ -35,7 +38,7 @@ export const mutations = {
     state.errorMessage = "";
     state.errorType = "";
   },
-  REGISTER_ERROR: state => {
+  REGISTER_ERROR: function (state) {
     state.token = null;
     state.user = null;
     state.isAuthenticated = false;
@@ -43,8 +46,8 @@ export const mutations = {
     state.errorMessage = "Registration failed";
     state.errorType = "REGISTER_ERROR";
   },
-  LOGIN_ERROR: state => {
-    localStorage.removeItem("token");
+  LOGIN_ERROR: function (state) {
+    this.$cookies.remove("token");
     state.token = null;
     state.user = null;
     state.isAuthenticated = false;
@@ -52,8 +55,8 @@ export const mutations = {
     state.errorMessage = "Login failed";
     state.errorType = "LOGIN_ERROR";
   },
-  AUTH_ERROR: state => {
-    localStorage.removeItem("token");
+  AUTH_ERROR: function (state) {
+    this.$cookies.remove("token");
     state.token = null;
     state.user = null;
     state.isAuthenticated = false;
@@ -121,7 +124,7 @@ export const actions = {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`
+        Authorization: `Bearer ${this.$cookies.get("token")}`
       }
     };
 

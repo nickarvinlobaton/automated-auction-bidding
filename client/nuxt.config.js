@@ -35,7 +35,7 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
-    '@/plugins/antd-ui'
+    '@/plugins/antd-ui',
   ],
   /*
   ** Auto import components
@@ -54,6 +54,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
     '@nuxtjs/dotenv',
+    'cookie-universal-nuxt',
   ],
   proxy: {
     '/api': {
@@ -67,7 +68,15 @@ export default {
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
-  axios: {},
+  // axios: {
+  //   headers: {
+  //     common: {
+  //       "Content-Type": "application/json",
+  //       "Accept": "application/json",
+  //       "Authorization": `Bearer ${this.$cookies.get("token")}`,
+  //     }
+  //   }
+  // },
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
