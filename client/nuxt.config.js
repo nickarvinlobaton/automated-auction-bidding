@@ -57,10 +57,10 @@ export default {
   ],
   proxy: {
     '/api': {
-      target: 'http://localhost:8000',
+      target: process.env.SERVER_BASE_URL,
     },
     "/oauth": {
-      target: "http://localhost:8000"
+      target: process.env.SERVER_BASE_URL
     }
   },
   /*
