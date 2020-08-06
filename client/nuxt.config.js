@@ -38,6 +38,7 @@ export default {
   */
   plugins: [
     '@/plugins/antd-ui',
+    { src: '~/plugins/vuex-persist', ssr: false }
   ],
   /*
   ** Auto import components
