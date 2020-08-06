@@ -72,7 +72,7 @@
 
         </a-layout-header>
         <a-layout-content
-          :class="content"
+          class="content"
         >
           <Nuxt/>
         </a-layout-content>
@@ -83,7 +83,7 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex'
+  import {mapState, mapGetters} from 'vuex'
 
   export default {
     data() {
@@ -93,9 +93,6 @@
     },
     beforeCreate() {
       this.$store.dispatch('authenticateUser');
-      if (!this.isAuthenticated && this.$route.name !== 'register') {
-        this.$router.push('/login', () => {});
-      }
     },
     methods: {
       logout() {
@@ -104,12 +101,10 @@
     },
     computed: {
       ...mapState(['isAuthenticated', 'user']),
+      ...mapGetters(['authenticated']),
       headerColor() {
         return this.isAuthenticated ? 'authenticated-nav' : 'unauthenticated-nav'
       },
-      content() {
-        return this.isAuthenticated ? 'authenticated-content' : 'unauthenticated-content'
-      }
     }
   }
 </script>

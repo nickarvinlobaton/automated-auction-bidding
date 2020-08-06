@@ -43,16 +43,9 @@
   color: #1890ff;
 }
 
-.authenticated-content {
+.content {
   margin: 24px 16px;
-  padding: 24px;
-  background: #ffffff;
-  min-height: 75vh;
-}
-
-.unauthenticated-content {
-  margin: 24px 16px;
-  padding: 24px;
+  padding: 0px;
   background: #f0f2f5;
   min-height: 75vh;
 }

@@ -135,10 +135,19 @@ export const actions = {
           user: res.data
         };
         commit("AUTH_USER", payload);
-        this.$router.push("/", () => {});
+        // Redirect to homepage after login
+        if($nuxt.$route.name === 'login') {
+          this.$router.push("/", () => {});
+        }
       })
       .catch(() => {
-        commit("AUTH_ERROR")
+        commit("AUTH_ERROR");
+        // Redirect if user is unauthenticated
+        if($nuxt.$route.name === 'register') {
+          this.$router.push('/register', () => {});
+        } else {
+          this.$router.push('/login', () => {});
+        }
       });
   },
   logoutUser: function ({ commit }) {
