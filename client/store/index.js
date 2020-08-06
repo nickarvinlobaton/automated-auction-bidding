@@ -101,9 +101,9 @@ export const actions = {
       }
     };
     const body = JSON.stringify({
-      grant_type: "password",
-      client_id: 2,
-      client_secret: "jbBMtwBc8SUHJCx6Zf90YgVxxG69H5cxMriLbKd8",
+      grant_type: process.env.GRANT_TYPE,
+      client_id: process.env.CLIENT_ID,
+      client_secret: process.env.CLIENT_SECRET,
       username,
       password
     });
