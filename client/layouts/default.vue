@@ -10,18 +10,13 @@
         collapsed-width="0"
       >
         <div class="logo"/>
-        <a-menu theme="dark" mode="inline" :default-selected-keys="['1']">
-          <a-menu-item key="1">
-            <a-icon type="user"/>
-            <span>nav 1</span>
-          </a-menu-item>
-          <a-menu-item key="2">
-            <a-icon type="video-camera"/>
-            <span>nav 2</span>
-          </a-menu-item>
-          <a-menu-item key="3">
-            <a-icon type="upload"/>
-            <span>nav 3</span>
+        <a-menu theme="dark" mode="inline" :default-selected-keys="['0']">
+          <a-menu-item
+            :key="item.index"
+            v-for="(item, index) in routes" @click="$router.push(item.route, () => {})"
+          >
+            <a-icon :type="item.icon"/>
+            <span>{{ item.name }}</span>
           </a-menu-item>
         </a-menu>
       </a-layout-sider>
@@ -33,6 +28,7 @@
             :type="collapsed ? 'menu-unfold' : 'menu-fold'"
             @click="() => (collapsed = !collapsed)"
           />
+          <span class="route-name">{{ $route.name }}</span>
           <!--Register & Login-->
           <div v-if="!isAuthenticated">
             <a-button
@@ -83,12 +79,19 @@
 </template>
 
 <script>
-  import {mapState, mapGetters} from 'vuex'
+  import {mapState} from 'vuex'
 
   export default {
     data() {
       return {
         collapsed: false,
+        routes: [
+          {
+            name: 'Domain',
+            route: '/domain',
+            icon: 'global',
+          }
+        ],
       };
     },
     beforeCreate() {
@@ -101,7 +104,6 @@
     },
     computed: {
       ...mapState(['isAuthenticated', 'user']),
-      ...mapGetters(['authenticated']),
       headerColor() {
         return this.isAuthenticated ? 'authenticated-nav' : 'unauthenticated-nav'
       },

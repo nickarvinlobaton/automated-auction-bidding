@@ -63,7 +63,15 @@ body {
 
 .content {
   margin: 24px 16px;
-  padding: 0px;
+  padding: 0;
   background: #f0f2f5;
-  min-height: 75vh;
+  min-height: 85vh;
+}
+
+.route-name {
+  text-transform: capitalize;
+}
+
+.content-card {
+  min-height: 80vh;
 }
