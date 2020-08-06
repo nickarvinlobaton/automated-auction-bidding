@@ -29,7 +29,7 @@ export const mutations = {
     state.errorMessage = "";
     state.errorType = "";
   },
-  LOGOUT_USER: function () {
+  LOGOUT_USER: function (state) {
     this.$cookies.remove("token");
     state.token = null;
     state.user = null;

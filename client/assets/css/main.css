@@ -1,0 +1,60 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+#component-layout .authenticated-nav {
+  background-color: #fff;
+  padding: 0;
+}
+#component-layout .unauthenticated-nav {
+  background-color: #001529;
+}
+#component-layout .trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+#component-layout .trigger:hover {
+  color: #1890ff;
+}
+#component-layout .logo {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
+}
+#component-layout .auth-link {
+  float: right;
+  padding: 16px 14px;
+  color: #ffffff;
+}
+#component-layout .auth-link:hover {
+  color: #1890ff;
+}
+#component-layout .nav-link {
+  color: #595959;
+  float: right;
+  padding: 16px 14px;
+}
+#component-layout .nav-link:hover {
+  color: #1890ff;
+}
+
+.authenticated-content {
+  margin: 24px 16px;
+  padding: 24px;
+  background: #ffffff;
+  min-height: 75vh;
+}
+
+.unauthenticated-content {
+  margin: 24px 16px;
+  padding: 24px;
+  background: #f0f2f5;
+  min-height: 75vh;
+}
+
+/*# sourceMappingURL=main.css.map */
