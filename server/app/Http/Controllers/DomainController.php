@@ -7,6 +7,7 @@ use App\Http\Resources\DomainCollection;
 use App\Http\Resources\DomainResource;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DomainController extends Controller
 {
@@ -16,6 +17,14 @@ class DomainController extends Controller
         $domains = $domains->sortKeysDesc();
 
         return (new DomainCollection($domains))->response()->setStatusCode(200);
+    }
+
+    public function show($id)
+    {
+        $domains = DB::table('domains')->where('user_id', $id)->get()->toArray();
+        return response()->json([
+            'data' => $domains
+        ], 200);
     }
 
     public function store(Request $request)
