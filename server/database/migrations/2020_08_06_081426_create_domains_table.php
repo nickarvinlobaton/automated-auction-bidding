@@ -19,6 +19,7 @@ class CreateDomainsTable extends Migration
             $table->integer('domain_id');
             $table->string('domain_name');
             $table->decimal('max_price', 13, 2);
+            $table->boolean('enabled')->default(1);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

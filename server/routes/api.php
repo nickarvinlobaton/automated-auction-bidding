@@ -18,6 +18,8 @@ Route::apiResource('/user', 'UserController');
 
 Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('/domain', 'DomainController');
+    Route::put('/disable-auction/{id}', 'DomainController@disableAuction');
+    Route::put('/enable-auction/{id}', 'DomainController@enableAuction');
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
