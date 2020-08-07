@@ -21,7 +21,8 @@ class DomainController extends Controller
 
     public function show($id)
     {
-        $domains = DB::table('domains')->where('user_id', $id)->get()->toArray();
+        $domains = DB::table('domains')->where('user_id', $id)
+            ->orderBy('id', 'desc')->get()->toArray();
         return response()->json([
             'data' => $domains
         ], 200);

@@ -15,7 +15,7 @@
         >
           <a-textarea
             v-model="textAreaList"
-            placeholder="Format: domain name, domain id, treshold"
+            placeholder="Format: Domain name, Auction ID, Price treshold"
             :auto-size="{ minRows: 10, maxRows: 10 }"
           />
         </a-modal>
@@ -36,15 +36,15 @@
 
   export default {
     name: "DomainComponent",
-    data () {
+    data() {
       return {
         showModal: false,
         loading: false,
         textAreaList: '',
         columns: [
-          { title: 'Domain ID', dataIndex: 'domain_id' },
-          { title: 'Domain name', dataIndex: 'domain_name' },
-          { title: 'Max price', dataIndex: 'max_price', className: 'column-money', },
+          {title: 'Domain ID', dataIndex: 'domain_id'},
+          {title: 'Domain name', dataIndex: 'domain_name'},
+          {title: 'Max price', dataIndex: 'max_price', className: 'column-money',},
         ],
         data: [],
       }
@@ -53,10 +53,10 @@
       this.getDomains();
     },
     methods: {
-      openModal () {
+      openModal() {
         this.showModal = true
       },
-      async getDomains () {
+      async getDomains() {
         this.loading = true;
         try {
           const config = {
@@ -74,19 +74,62 @@
           this.loading = false;
         }
       },
-      handleSubmit () {},
+      async handleSubmit() {
+        this.loading = true;
+        for (let i=0; i<this.domainList.length; i++) {
+          try {
+            const config = {
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${this.computedToken}`
+              }
+            };
+            const postData = JSON.stringify(this.domainList[i]);
+            const response = await this.$axios.post('./api/domain', postData, config);
+            console.log(response)
+          } catch (e) {
+            console.log(e)
+          }
+        }
+        this.getDomains();
+        this.loading = false;
+        this.showModal = false;
+      },
     },
     computed: {
       ...mapState(['user', 'token']),
-      userData () {
+      userData() {
         return this.user
       },
-      computedToken () {
+      computedToken() {
         return this.token
-      }
+      },
+      splitTextByNewLine() {
+        return this.textAreaList.split(/\r?\n/);
+      },
+      domainList() {
+        let text = [...this.splitTextByNewLine];
+        let newText = [];
+        let enteredDomainData = [];
+        // separate commas to output array
+        for (let i = 0; i < text.length; i++) {
+          newText.push(text[i].split(','));
+        }
+        // convert array to object
+        for (let i = 0; i < newText.length; i++) {
+          let array = [...newText[i]];
+          enteredDomainData[i] = {};
+          enteredDomainData[i].user_id = this.userData.id;
+          enteredDomainData[i].domain_name = array[0];
+          enteredDomainData[i].domain_id = array[1];
+          enteredDomainData[i].max_price = array[2];
+        }
+
+        return enteredDomainData;
+      },
     },
     watch: {
-      userData () {
+      userData() {
         this.getDomains()
       }
     }
