@@ -20,7 +20,11 @@
           />
         </a-modal>
 
-        <a-table :columns="columns" :data-source="data" rowKey="id" />
+        <a-table
+          class="data-table"
+          :columns="columns" :data-source="data" rowKey="id"
+          :loading="loading"
+        />
       </a-card>
     </a-col>
     <a-col></a-col>
@@ -35,24 +39,25 @@
     data () {
       return {
         showModal: false,
+        loading: false,
         textAreaList: '',
         columns: [
           { title: 'Domain ID', dataIndex: 'domain_id' },
           { title: 'Domain name', dataIndex: 'domain_name' },
-          { title: 'Max price', dataIndex: 'max_price' },
+          { title: 'Max price', dataIndex: 'max_price', className: 'column-money', },
         ],
         data: [],
       }
     },
     async mounted() {
-
+      this.getDomains();
     },
     methods: {
       openModal () {
         this.showModal = true
       },
       async getDomains () {
-        console.log(this.$store.state.user)
+        this.loading = true;
         try {
           const config = {
             headers: {
@@ -61,18 +66,19 @@
             }
           };
 
-          const response = await this.$axios.get(`./api/domain/${this.id.id}`, config);
-          console.log(response);
+          const response = await this.$axios.get(`./api/domain/${this.userData.id}`, config);
           this.data = response.data.data;
+          this.loading = false;
         } catch (e) {
-          console.log(e)
+          console.log(e);
+          this.loading = false;
         }
       },
       handleSubmit () {},
     },
     computed: {
       ...mapState(['user', 'token']),
-      id () {
+      userData () {
         return this.user
       },
       computedToken () {
@@ -80,7 +86,7 @@
       }
     },
     watch: {
-      id () {
+      userData () {
         this.getDomains()
       }
     }

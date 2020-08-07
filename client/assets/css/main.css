@@ -49,6 +49,12 @@
   background: #f0f2f5;
   min-height: 85vh;
 }
+.content .data-table {
+  padding-top: 15px;
+}
+.content .data-table .column-money {
+  text-align: right !important;
+}
 
 .route-name {
   text-transform: capitalize;
