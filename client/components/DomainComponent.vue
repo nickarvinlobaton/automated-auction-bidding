@@ -116,7 +116,6 @@
             const postData = JSON.stringify(this.domainList[i]);
             const response = await this.$axios.post('./api/domain', postData);
             console.log(response);
-            this.textAreaList = ''
           } catch (e) {
             console.log(e)
           }
@@ -124,12 +123,14 @@
         this.getDomains();
         this.loading = false;
         this.showModal = false;
+        this.loading = true;
       },
       onSelectChange(selectedRowKeys) {
         this.selectedRowKeys = selectedRowKeys;
       },
       async disableAuctions() {
         this.disableBtnLoading = true;
+        this.loading = true;
         for(let i=0; i<this.selectedRowKeys.length; i++) {
           try {
             const response = await this.$axios.put(`./api/disable-auction/${this.selectedRowKeys[i]}`, {});
@@ -145,6 +146,7 @@
       },
       async enableAuctions(selectedRowKeys) {
         this.disableBtnLoading = true;
+        this.loading = true;
         for(let i=0; i<selectedRowKeys.length; i++) {
           try {
             const response = await this.$axios.put(`./api/enable-auction/${selectedRowKeys[i]}`, {});
