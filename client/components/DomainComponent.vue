@@ -90,14 +90,7 @@
       async getDomains() {
         this.loading = true;
         try {
-          const config = {
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${this.computedToken}`
-            }
-          };
-
-          const response = await this.$axios.get(`./api/domain/${this.userData.id}`, config);
+          const response = await this.$axios.get(`./api/domain/${this.userData.id}`);
           this.data = response.data.data;
           this.loading = false;
         } catch (e) {
@@ -108,14 +101,7 @@
       async getDisabledDomains() {
         this.loading = true;
         try {
-          const config = {
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${this.computedToken}`
-            }
-          };
-
-          const response = await this.$axios.get(`./api/domain-disabled/${this.userData.id}`, config);
+          const response = await this.$axios.get(`./api/domain-disabled/${this.userData.id}`);
           this.disabledData = response.data.data;
           this.loading = false;
         } catch (e) {
@@ -127,14 +113,8 @@
         this.loading = true;
         for (let i = 0; i < this.domainList.length; i++) {
           try {
-            const config = {
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${this.computedToken}`
-              }
-            };
             const postData = JSON.stringify(this.domainList[i]);
-            const response = await this.$axios.post('./api/domain', postData, config);
+            const response = await this.$axios.post('./api/domain', postData);
             console.log(response);
             this.textAreaList = ''
           } catch (e) {
@@ -152,21 +132,14 @@
         this.disableBtnLoading = true;
         for(let i=0; i<this.selectedRowKeys.length; i++) {
           try {
-            const config = {
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${this.computedToken}`
-              }
-            };
-            const response = await this.$axios.put(`./api/disable-auction/${this.selectedRowKeys[i]}`, {}, config);
+            const response = await this.$axios.put(`./api/disable-auction/${this.selectedRowKeys[i]}`, {});
             console.log(response);
-            this.getDomains();
-            this.getDisabledDomains();
           } catch(e) {
             console.log(e);
-            this.disableBtnLoading = false;
           }
         }
+        this.getDomains();
+        this.getDisabledDomains();
         this.disableBtnLoading = false;
         this.selectedRowKeys = [];
       },
@@ -174,22 +147,15 @@
         this.disableBtnLoading = true;
         for(let i=0; i<selectedRowKeys.length; i++) {
           try {
-            const config = {
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${this.computedToken}`
-              }
-            };
-            const response = await this.$axios.put(`./api/enable-auction/${selectedRowKeys[i]}`, {}, config);
+            const response = await this.$axios.put(`./api/enable-auction/${selectedRowKeys[i]}`, {});
             console.log(response);
-            this.disableBtnLoading = false;
-            this.getDomains();
-            this.getDisabledDomains();
           } catch(e) {
             console.log(e);
-            this.disableBtnLoading = false;
           }
         }
+        this.getDomains();
+        this.getDisabledDomains();
+        this.disableBtnLoading = false;
       },
     },
     computed: {

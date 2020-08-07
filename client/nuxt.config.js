@@ -38,6 +38,7 @@ export default {
   */
   plugins: [
     '@/plugins/antd-ui',
+    '@/plugins/axios',
     { src: '~/plugins/vuex-persist', ssr: false }
   ],
   /*
@@ -71,15 +72,7 @@ export default {
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
-  // axios: {
-  //   headers: {
-  //     common: {
-  //       "Content-Type": "application/json",
-  //       "Accept": "application/json",
-  //       "Authorization": `Bearer ${this.$cookies.get("token")}`,
-  //     }
-  //   }
-  // },
+  axios: {},
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/

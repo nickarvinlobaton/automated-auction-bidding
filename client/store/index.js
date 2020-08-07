@@ -131,6 +131,7 @@ export const actions = {
     this.$axios
       .get(`./api/user`, config)
       .then(res => {
+        console.log(res)
         const payload = {
           user: res.data
         };
