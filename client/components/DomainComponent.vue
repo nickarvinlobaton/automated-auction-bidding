@@ -3,28 +3,48 @@
     <a-col></a-col>
     <a-col :lg="24" :xs="24">
       <a-card class="content-card">
-        <a-button type="primary" @click="openModal">
-          Add Domain List
-        </a-button>
-        <a-modal
-          v-model="showModal"
-          title="Add domain list"
-          centered
-          width="60%"
-          @ok="handleSubmit" @cancel="showModal=false"
-        >
-          <a-textarea
-            v-model="textAreaList"
-            placeholder="Format: Domain name, Auction ID, Price treshold"
-            :auto-size="{ minRows: 10, maxRows: 10 }"
-          />
-        </a-modal>
+        <a-tabs type="card">
 
-        <a-table
-          class="data-table"
-          :columns="columns" :data-source="data" rowKey="id"
-          :loading="loading"
-        />
+          <a-tab-pane key="1" tab="Active auctions">
+            <a-button type="primary" @click="openModal">
+              Add Domain List
+            </a-button>
+
+            <a-button
+              type="danger" :disabled="!hasSelected"
+              :loading="disableBtnLoading"
+              @click="disableAuctions"
+            >
+              Disable
+            </a-button>
+
+            <a-modal
+              v-model="showModal"
+              title="Add domain list"
+              centered
+              width="60%"
+              @ok="handleSubmit" @cancel="showModal=false"
+            >
+              <a-textarea
+                v-model="textAreaList"
+                placeholder="Format: Domain name, Auction ID, Price treshold"
+                :auto-size="{ minRows: 10, maxRows: 10 }"
+              />
+            </a-modal>
+
+            <a-table
+              class="data-table"
+              :columns="columns" :data-source="data" rowKey="id"
+              :loading="loading"
+              :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
+            />
+          </a-tab-pane>
+
+          <a-tab-pane key="2" tab="Disabled auctions">
+            Disabled
+          </a-tab-pane>
+
+        </a-tabs>
       </a-card>
     </a-col>
     <a-col></a-col>
@@ -40,6 +60,7 @@
       return {
         showModal: false,
         loading: false,
+        disableBtnLoading: false,
         textAreaList: '',
         columns: [
           {title: 'Domain ID', dataIndex: 'domain_id'},
@@ -47,6 +68,7 @@
           {title: 'Max price', dataIndex: 'max_price', className: 'column-money',},
         ],
         data: [],
+        selectedRowKeys: [],
       }
     },
     async mounted() {
@@ -76,7 +98,7 @@
       },
       async handleSubmit() {
         this.loading = true;
-        for (let i=0; i<this.domainList.length; i++) {
+        for (let i = 0; i < this.domainList.length; i++) {
           try {
             const config = {
               headers: {
@@ -86,7 +108,8 @@
             };
             const postData = JSON.stringify(this.domainList[i]);
             const response = await this.$axios.post('./api/domain', postData, config);
-            console.log(response)
+            console.log(response);
+            this.textAreaList = ''
           } catch (e) {
             console.log(e)
           }
@@ -94,6 +117,17 @@
         this.getDomains();
         this.loading = false;
         this.showModal = false;
+      },
+      onSelectChange(selectedRowKeys) {
+        this.selectedRowKeys = selectedRowKeys;
+      },
+      disableAuctions() {
+        this.disableBtnLoading = true;
+        setTimeout(() => {
+          console.log(this.selectedRowKeys)
+          this.disableBtnLoading = false;
+          this.selectedRowKeys = []
+        }, 2000)
       },
     },
     computed: {
@@ -106,6 +140,9 @@
       },
       splitTextByNewLine() {
         return this.textAreaList.split(/\r?\n/);
+      },
+      hasSelected() {
+        return this.selectedRowKeys.length > 0;
       },
       domainList() {
         let text = [...this.splitTextByNewLine];
