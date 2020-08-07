@@ -16,10 +16,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('/user', 'UserController');
 
+
 Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('/domain', 'DomainController');
-    Route::put('/disable-auction/{id}', 'DomainController@disableAuction');
+    Route::get('/domain-disabled/{id}', 'DomainController@showDisabled');
     Route::put('/enable-auction/{id}', 'DomainController@enableAuction');
+    Route::put('/disable-auction/{id}', 'DomainController@disableAuction');
+
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

@@ -41,7 +41,12 @@
           </a-tab-pane>
 
           <a-tab-pane key="2" tab="Disabled auctions">
-            Disabled
+            <DisabledDomains
+            :loading="loading"
+            :data="disabledData"
+            :disableBtnLoading="disableBtnLoading"
+            @enable-auction="enableAuctions"
+          />
           </a-tab-pane>
 
         </a-tabs>
@@ -52,10 +57,12 @@
 </template>
 
 <script>
+  import DisabledDomains from './DisabledDomains'
   import {mapState} from 'vuex'
 
   export default {
     name: "DomainComponent",
+    components: { DisabledDomains },
     data() {
       return {
         showModal: false,
@@ -68,11 +75,13 @@
           {title: 'Max price', dataIndex: 'max_price', className: 'column-money',},
         ],
         data: [],
+        disabledData: [],
         selectedRowKeys: [],
       }
     },
     async mounted() {
       this.getDomains();
+      this.getDisabledDomains();
     },
     methods: {
       openModal() {
@@ -90,6 +99,24 @@
 
           const response = await this.$axios.get(`./api/domain/${this.userData.id}`, config);
           this.data = response.data.data;
+          this.loading = false;
+        } catch (e) {
+          console.log(e);
+          this.loading = false;
+        }
+      },
+      async getDisabledDomains() {
+        this.loading = true;
+        try {
+          const config = {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${this.computedToken}`
+            }
+          };
+
+          const response = await this.$axios.get(`./api/domain-disabled/${this.userData.id}`, config);
+          this.disabledData = response.data.data;
           this.loading = false;
         } catch (e) {
           console.log(e);
@@ -121,13 +148,48 @@
       onSelectChange(selectedRowKeys) {
         this.selectedRowKeys = selectedRowKeys;
       },
-      disableAuctions() {
+      async disableAuctions() {
         this.disableBtnLoading = true;
-        setTimeout(() => {
-          console.log(this.selectedRowKeys)
-          this.disableBtnLoading = false;
-          this.selectedRowKeys = []
-        }, 2000)
+        for(let i=0; i<this.selectedRowKeys.length; i++) {
+          try {
+            const config = {
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${this.computedToken}`
+              }
+            };
+            const response = await this.$axios.put(`./api/disable-auction/${this.selectedRowKeys[i]}`, {}, config);
+            console.log(response);
+            this.getDomains();
+            this.getDisabledDomains();
+          } catch(e) {
+            console.log(e);
+            this.disableBtnLoading = false;
+          }
+        }
+        this.disableBtnLoading = false;
+        this.selectedRowKeys = [];
+      },
+      async enableAuctions(selectedRowKeys) {
+        this.disableBtnLoading = true;
+        for(let i=0; i<selectedRowKeys.length; i++) {
+          try {
+            const config = {
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${this.computedToken}`
+              }
+            };
+            const response = await this.$axios.put(`./api/enable-auction/${selectedRowKeys[i]}`, {}, config);
+            console.log(response);
+            this.disableBtnLoading = false;
+            this.getDomains();
+            this.getDisabledDomains();
+          } catch(e) {
+            console.log(e);
+            this.disableBtnLoading = false;
+          }
+        }
       },
     },
     computed: {
@@ -166,8 +228,10 @@
       },
     },
     watch: {
+      // always get latest data
       userData() {
-        this.getDomains()
+        this.getDomains(),
+        this.getDisabledDomains();
       }
     }
   }

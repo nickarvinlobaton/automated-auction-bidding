@@ -19,9 +19,24 @@ class DomainController extends Controller
         return (new DomainCollection($domains))->response()->setStatusCode(200);
     }
 
-    public function show($id)
+    public function show($userId)
     {
-        $domains = DB::table('domains')->where('user_id', $id)
+        $domains = DB::table('domains')->where([
+            ['user_id', '=', $userId],
+            ['enabled', '=', true],
+        ])
+            ->orderBy('id', 'desc')->get()->toArray();
+        return response()->json([
+            'data' => $domains
+        ], 200);
+    }
+
+    public function showDisabled($userId)
+    {
+        $domains = DB::table('domains')->where([
+            ['user_id', '=', $userId],
+            ['enabled', '=', false],
+        ])
             ->orderBy('id', 'desc')->get()->toArray();
         return response()->json([
             'data' => $domains
