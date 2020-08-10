@@ -37,7 +37,11 @@
               :columns="columns" :data-source="data" rowKey="id"
               :loading="loading"
               :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
-            />
+            >
+              <span slot="action" slot-scope="record">
+                <a @click="handleDetails(record.id)">Details</a>
+              </span>
+            </a-table>
           </a-tab-pane>
 
           <a-tab-pane key="2" tab="Disabled auctions">
@@ -72,7 +76,12 @@
         columns: [
           {title: 'Domain ID', dataIndex: 'domain_id'},
           {title: 'Domain name', dataIndex: 'domain_name'},
-          {title: 'Max price', dataIndex: 'max_price', className: 'column-money',},
+          {title: 'Max price', dataIndex: 'max_price', className: 'column-money'},
+          {
+            title: 'Action',
+            key: 'action',
+            scopedSlots: { customRender: 'action' },
+          },
         ],
         data: [],
         disabledData: [],
@@ -158,6 +167,9 @@
         this.getDomains();
         this.getDisabledDomains();
         this.disableBtnLoading = false;
+      },
+      handleDetails(id) {
+        this.$router.push(`/domain/${id}`);
       },
     },
     computed: {
