@@ -11,40 +11,49 @@
 
     <a-table
       class="data-table"
-      :columns="columns" :data-source="data" rowKey="id"
+      :columns="columns"
+      :data-source="data"
+      rowKey="id"
       :loading="loading"
-      :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
+      :row-selection="{
+        selectedRowKeys: selectedRowKeys,
+        onChange: onSelectChange
+      }"
     />
   </div>
 </template>
 
 <script>
 export default {
-  name: "DisabledDomains",
-  props: ['data', 'disableBtnLoading', 'loading'],
-  data () {
+  name: "DisabledAuctions",
+  props: ["data", "disableBtnLoading", "loading"],
+  data() {
     return {
       selectedRowKeys: [],
       columns: [
-        {title: 'Domain ID', dataIndex: 'domain_id'},
-        {title: 'Domain name', dataIndex: 'domain_name'},
-        {title: 'Max price', dataIndex: 'max_price', className: 'column-money',},
-      ],
-    }
+        { title: "Domain ID", dataIndex: "domain_id" },
+        { title: "Domain name", dataIndex: "domain_name" },
+        {
+          title: "Max price",
+          dataIndex: "max_price",
+          className: "column-money"
+        }
+      ]
+    };
   },
   methods: {
     onSelectChange(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys;
     },
     enableAuctions(selectedRowKeys) {
-      this.$emit('enable-auction', selectedRowKeys);
+      this.$emit("enable-auction", selectedRowKeys);
       this.selectedRowKeys = [];
     }
   },
   computed: {
     hasSelected() {
       return this.selectedRowKeys.length > 0;
-    },
+    }
   }
-}
+};
 </script>

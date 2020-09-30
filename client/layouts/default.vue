@@ -9,13 +9,14 @@
         breakpoint="lg"
         collapsed-width="0"
       >
-        <div class="logo"/>
+        <div class="logo" />
         <a-menu theme="dark" mode="inline" :default-selected-keys="['0']">
           <a-menu-item
             :key="item.index"
-            v-for="(item, index) in routes" @click="$router.push(item.route, () => {})"
+            v-for="(item, index) in routes"
+            @click="$router.push(item.route, () => {})"
           >
-            <a-icon :type="item.icon"/>
+            <a-icon :type="item.icon" />
             <span>{{ item.name }}</span>
           </a-menu-item>
         </a-menu>
@@ -28,7 +29,9 @@
             :type="collapsed ? 'menu-unfold' : 'menu-fold'"
             @click="() => (collapsed = !collapsed)"
           />
-          <span v-if="isAuthenticated" class="route-name">{{ $route.name }}</span>
+          <span v-if="isAuthenticated" class="route-name">{{
+            $route.name
+          }}</span>
           <!--Register & Login-->
           <div v-if="!isAuthenticated">
             <a-button
@@ -57,20 +60,13 @@
             Logout
           </a-button>
           <!--Username-->
-          <a-button
-            v-if="isAuthenticated"
-            class="nav-link"
-            type="link"
-          >
-            <a-icon type="user"/>
+          <a-button v-if="isAuthenticated" class="nav-link" type="link">
+            <a-icon type="user" />
             {{ this.user.username }}
           </a-button>
-
         </a-layout-header>
-        <a-layout-content
-          class="content"
-        >
-          <Nuxt/>
+        <a-layout-content class="content">
+          <Nuxt />
         </a-layout-content>
         <a-layout-footer></a-layout-footer>
       </a-layout>
@@ -79,38 +75,36 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex'
+import { mapState } from "vuex";
 
-  export default {
-    data() {
-      return {
-        collapsed: false,
-        routes: [
-          {
-            name: 'Domain',
-            route: '/domain',
-            icon: 'global',
-          }
-        ],
-      };
-    },
-    beforeCreate() {
-      this.$store.dispatch('authenticateUser');
-    },
-    methods: {
-      logout() {
-        this.$store.dispatch('logoutUser');
-      }
-    },
-    computed: {
-      ...mapState(['isAuthenticated', 'user']),
-      headerColor() {
-        return this.isAuthenticated ? 'authenticated-nav' : 'unauthenticated-nav'
-      },
+export default {
+  data() {
+    return {
+      collapsed: false,
+      routes: [
+        {
+          name: "Auctions",
+          route: "/auction",
+          icon: "global"
+        }
+      ]
+    };
+  },
+  beforeCreate() {
+    this.$store.dispatch("authenticateUser");
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("logoutUser");
+    }
+  },
+  computed: {
+    ...mapState(["isAuthenticated", "user"]),
+    headerColor() {
+      return this.isAuthenticated ? "authenticated-nav" : "unauthenticated-nav";
     }
   }
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

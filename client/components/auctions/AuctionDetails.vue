@@ -8,10 +8,14 @@
             <a-col :lg="12" :xs="24"><h3>Domain name: Domain_name</h3></a-col>
           </a-row>
           <a-row>
-            <a-col :lg="12" :xs="24"><span>Bids/Offers: Bids_offers</span></a-col>
+            <a-col :lg="12" :xs="24"
+              ><span>Bids/Offers: Bids_offers</span></a-col
+            >
           </a-row>
           <a-row>
-            <a-col :lg="12" :xs="24"><span>Minimum Offer: min_offer</span></a-col>
+            <a-col :lg="12" :xs="24"
+              ><span>Minimum Offer: min_offer</span></a-col
+            >
           </a-row>
           <a-row>
             <a-col :lg="12" :xs="24"><span>Status: current_status</span></a-col>
@@ -26,11 +30,9 @@
 </template>
 
 <script>
-  export default {
-    name: "DomainDetails"
-  }
+export default {
+  name: "AuctionDetails"
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
